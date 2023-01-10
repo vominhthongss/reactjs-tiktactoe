@@ -2,8 +2,15 @@ import React, { Component } from "react";
 import Square from "./Square";
 import "./Board.css";
 class Board extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      square: Array(9).fill(null),
+    };
+  }
+
   renderSquare(i) {
-    return <Square value={i} />;
+    return <Square value={this.state.square[i]} />;
   }
   render() {
     const status = "Next player: X";
