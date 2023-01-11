@@ -2,20 +2,29 @@
     background: #fff;
     border: 1px solid #999;
     float: left;
-    font-size: 24px;
+    font-size: 57px;
     font-weight: bold;
     line-height: 34px;
-    height: 34px;
+    height: 57px;
     margin-right: -1px;
     margin-top: -1px;
     padding: 0;
     text-align: center;
-    width: 34px;
+    width: 57px;
   }
   
   .square:focus {
     outline: none;
   }
+  .square-x{
+
+    color: red;
+  }
+  .square-o{
+
+    color: blue;
+  }
   .kbd-navigation .square:focus {
     background: #ddd;
   }
+  
