@@ -1,4 +1,4 @@
-import React, { Component, useRef } from "react";
+import React, { Component } from "react";
 import Board from "./Board";
 import "./Game.css";
 import calculateWinner from "../help/calculateWinner";
@@ -10,25 +10,19 @@ class Game extends Component {
       history: [{ squares: Array(9).fill(null) }],
       stepNumber: 0,
       xIsNext: true,
-      user: {
-        user1: "X",
-        user2: "O",
-      },
+      user1: "X",
+      user2: "O"
     };
     this.refUser1 = React.createRef();
     this.refUser2 = React.createRef();
-
-    this.setUser1 = this.setUser1.bind(this);
-    this.setUser2 = this.setUser2.bind(this);
-    this.handleClick = this.handleClick.bind(this);
   }
 
-  handleClick(i) {
+  handleClick = (i) => {
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
     const current = history[history.length - 1];
     const squares = current.squares.slice();
-    const user1 = this.state.user.user1;
-    const user2 = this.state.user.user2;
+    const user1 = this.state.user1;
+    const user2 = this.state.user2;
     if (user1 === "") {
       alert("Nhập tên User 1");
       this.refUser1.current.focus();
@@ -57,21 +51,9 @@ class Game extends Component {
     });
   }
 
-  setUser1(e) {
+  setUser(name, value) {
     this.setState({
-      user: {
-        ...this.state.user,
-        user1: e.target.value,
-      },
-    });
-  }
-
-  setUser2(e) {
-    this.setState({
-      user: {
-        ...this.state.user,
-        user2: e.target.value,
-      },
+      [name]: value,
     });
   }
 
@@ -95,11 +77,11 @@ class Game extends Component {
     if (winner) {
       status =
         "Winner: " +
-        (winner === "X" ? this.state.user.user1 : this.state.user.user2);
+        (winner === "X" ? this.state.user1 : this.state.user2) +"🥳🥳🥳🥳";
     } else {
       status =
         "Next player: " +
-        (this.state.xIsNext ? this.state.user.user1 : this.state.user.user2);
+        (this.state.xIsNext ? this.state.user1 : this.state.user2);
     }
 
     return (
@@ -107,17 +89,24 @@ class Game extends Component {
         <div>
           <div className="game-user">
             <span>User 1</span>
-            <input ref={this.refUser1} type="text" onChange={this.setUser1} value={this.state.user.user1}/>
+            <input
+              ref={this.refUser1}
+              type="text"
+              onChange={e => this.setUser("user1", e.target.value)}
+              value={this.state.user1}
+            />
           </div>
           <div className="game-user">
             <span>User 2</span>
-            <input ref={this.refUser2} type="text" onChange={this.setUser2} value={this.state.user.user2}/>
+            <input
+              ref={this.refUser2}
+              type="text"
+              onChange={e => this.setUser("user2", e.target.value)}
+              value={this.state.user2}
+            />
           </div>
           <div className="game-board">
-            <Board
-              squares={current.squares}
-              onClick={this.handleClick}
-            />
+            <Board squares={current.squares} onClick={this.handleClick} />
           </div>
         </div>
         <div className="game-info">
