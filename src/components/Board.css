@@ -1,12 +1,11 @@
 .board-row:after {
-    clear: both;
-    content: "";
-    display: table;
-  }
-  .status {
-    margin-bottom: 10px;
-  }
-  .board-row{
-    margin-left:58px;
-
-  }
+  clear: both;
+  content: "";
+  display: table;
+}
+.status {
+  margin-bottom: 10px;
+}
+.board-row {
+  margin-left: 58px;
+}
