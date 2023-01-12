@@ -10,8 +10,26 @@
 .game-info div {
   margin-left: 25px;
 }
+.game-user {
+  width: 300px;
+  margin-bottom: 5px;
+}
 .game-user input {
   margin-left: 10px;
+  width: 200px;
+  float: right;
+}
+.user1 {
+  color: red;
+}
+.user2 {
+  color: blue;
+}
+.game-user select {
+  margin-left: 10px;
+  width: 208px;
+  float: right;
+  height: 22px;
 }
 .game-user input:focus {
   background-color: #99999999;

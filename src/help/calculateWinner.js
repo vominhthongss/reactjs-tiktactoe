@@ -1,20 +1,74 @@
-const calculateWinner = (squares) => {
-  const lines = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-  ];
-  for (let i = 0; i < lines.length; i++) {
-    const [a, b, c] = lines[i];
-    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
+const calculateWinner = (squares, row, column) => {
+  let count = 0;
+  let _arr = [];
+  for (let i = 0; i < row; i++) {
+    let _row = [];
+    for (let j = 0; j < column; j++) {
+      _row.push(squares[count]);
+      count++;
+    }
+    _arr.push(_row);
+  }
+  console.log(_arr);
+  for (let i = 0; i < row; i++) {
+    for (let j = 0; j < column; j++) {
+      if (
+        _arr[i][j] !== null &&
+        i !== 0 &&
+        j !== 0 &&
+        i !== row - 1 &&
+        j !== column - 1 &&
+        ((_arr[i][j] === _arr[i - 1][j] && _arr[i][j] === _arr[i + 1][j]) ||
+          (_arr[i][j] === _arr[i][j - 1] && _arr[i][j] === _arr[i][j + 1]) ||
+          (_arr[i][j] === _arr[i - 1][j - 1] &&
+            _arr[i][j] === _arr[i + 1][j + 1]) ||
+          (_arr[i][j] === _arr[i - 1][j + 1] &&
+            _arr[i][j] === _arr[i + 1][j - 1]))
+      ) {
+        return _arr[i][j];
+      }
+      if (
+        (_arr[i][j] !== null && i === 0) ||
+        (_arr[i][j] !== null && i === row - 1)
+      ) {
+        if (
+          j === 0 &&
+          _arr[i][j] === _arr[i][j + 1] &&
+          _arr[i][j] === _arr[i][j + 2]
+        ) {
+          return _arr[i][j];
+        }
+        if (
+          j === column - 1 &&
+          _arr[i][j] === _arr[i][j - 1] &&
+          _arr[i][j] === _arr[i][j - 2]
+        ) {
+          return _arr[i][j];
+        }
+      }
+
+      if (
+        (_arr[i][j] !== null && j === 0) ||
+        (_arr[i][j] !== null && j === column - 1)
+      ) {
+        if (
+          i === 0 &&
+          _arr[i][j] === _arr[i + 1][j] &&
+          _arr[i][j] === _arr[i + 2][j]
+        ) {
+          return _arr[i][j];
+        }
+        if (
+          i === row - 1 &&
+          _arr[i][j] === _arr[i - 1][j] &&
+          _arr[i][j] === _arr[i - 2][j]
+        ) {
+          return _arr[i][j];
+        }
+      }
     }
   }
+
   return null;
 };
 export default calculateWinner;

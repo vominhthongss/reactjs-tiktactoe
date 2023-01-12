@@ -6,6 +6,11 @@
 .status {
   margin-bottom: 10px;
 }
-.board-row {
+/* .board-row {
   margin-left: 58px;
+} */
+.board-main {
+  background-color: aqua;
+  padding: 2px;
+  width: fit-content;
 }
