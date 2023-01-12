@@ -27,6 +27,11 @@ function Game() {
       </li>
     );
   });
+  const options = [3, 4, 5, 6, 7, 8, 9, 10].map((x) => (
+    <option value={x}>
+      {x} x {x}
+    </option>
+  ));
 
   const handleClick = (i) => {
     const historyTemp = history.slice(0, stepNumber + 1);
@@ -107,14 +112,7 @@ function Game() {
               setBoard(e.target.value);
             }}
           >
-            <option value="3">3 x 3</option>
-            <option value="4">4 x 4</option>
-            <option value="5">5 x 5</option>
-            <option value="6">6 x 6</option>
-            <option value="7">7 x 7</option>
-            <option value="8">8 x 8</option>
-            <option value="9">9 x 9</option>
-            <option value="10">10 x 10</option>
+            {options}
           </select>
         </div>
         <div className="game-board">
