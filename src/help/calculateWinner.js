@@ -9,7 +9,6 @@ const calculateWinner = (squares, row, column) => {
     }
     _arr.push(_row);
   }
-  console.log(_arr);
   for (let i = 0; i < row; i++) {
     for (let j = 0; j < column; j++) {
       if (
