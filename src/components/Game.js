@@ -7,7 +7,7 @@ function Game() {
   const [row, setRow] = useState(3);
   const [column, setColumn] = useState(3);
   const [history, setHistory] = useState([
-    { squares: Array(15 * 15).fill(null) },
+    { squares: Array(10 * 10).fill(null) },
   ]);
   const [stepNumber, setStepNumber] = useState(0);
   const [xIsNext, setXIsNext] = useState(true);
