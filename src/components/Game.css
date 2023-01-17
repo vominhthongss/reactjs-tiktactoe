@@ -3,42 +3,32 @@
   flex-direction: row;
   padding: 40px;
 }
+.game-title {
+  text-align: center;
+  background-color: rgb(51, 121, 51);
+  font-size: larger;
+  padding: 10px;
+  font-weight: bold;
+}
 
-.game-info {
-  margin-left: 20px;
-}
-.game-info div {
-  margin-left: 25px;
-}
 .game-user {
   width: 300px;
-  margin-bottom: 5px;
+  margin-bottom: 20px;
 }
-.game-user input {
-  margin-left: 10px;
-  width: 200px;
-  float: right;
-}
+
 .user1 {
   color: red;
 }
+
 .user2 {
   color: blue;
 }
-.game-user select {
-  margin-left: 10px;
-  width: 208px;
-  float: right;
-  height: 22px;
-}
-.game-user input:focus {
-  background-color: #99999999;
-}
-.game-user span {
-  font-weight: bold;
-}
+
 .game-board {
-  margin-top: 10px;
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
 }
 .game-btn {
   padding: 5px;
@@ -46,4 +36,23 @@
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   margin-bottom: 2px;
   width: 200px;
+}
+
+.game-btn Button {
+  width: 200px;
+}
+
+.mui-textfield {
+  width: 230px;
+}
+
+.mui-select {
+  width: 230px;
+}
+
+.step {
+  height: 300px;
+  overflow: scroll;
+  overflow-y: auto;
+  overflow-x: auto;
 }

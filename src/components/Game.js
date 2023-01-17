@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import Board from "./Board";
 import "./Game.css";
 import calculateWinner from "../help/calculateWinner";
+import { Button, MenuItem, Select, TextField } from "@mui/material";
 
 function Game() {
   const [row, setRow] = useState(3);
@@ -20,17 +21,21 @@ function Game() {
   const moves = history.map((step, move) => {
     const desc = move ? "Go to move #" + move : "Go to game start";
     return (
-      <li key={move}>
-        <button className="game-btn" onClick={() => jumpTo(move)}>
+      <li key={move} className="game-btn">
+        <Button
+          onClick={() => jumpTo(move)}
+          variant="contained"
+          color="success"
+        >
           {desc}
-        </button>
+        </Button>
       </li>
     );
   });
   const options = [3, 4, 5, 6, 7, 8, 9, 10].map((x) => (
-    <option key={x} value={x}>
+    <MenuItem key={x} value={x}>
       {x} x {x}
-    </option>
+    </MenuItem>
   ));
 
   const handleClick = (i) => {
@@ -82,39 +87,48 @@ function Game() {
     status = "Next player: " + (xIsNext ? user1 : user2);
   }
   return (
-    <div className="game">
-      <div className="game-content">
-        <div className="game-user">
-          <span>User 1</span>
-          <input
-            className="user1"
-            ref={refUser1}
-            type="text"
-            onChange={(e) => setUser("user1", e.target.value)}
-            value={user1}
-          />
+    <div>
+      <div className="game-title">TIC TAC TOE</div>
+      <div className="game">
+        <div className="game-content">
+          <div className="game-user">
+            <TextField
+              className="mui-textfield"
+              inputRef={refUser1}
+              label="User 1"
+              variant="outlined"
+              onChange={(e) => setUser("user1", e.target.value)}
+              value={user1}
+            />
+          </div>
+          <div className="game-user">
+            <TextField
+              className="mui-textfield"
+              inputRef={refUser2}
+              label="User 2"
+              variant="outlined"
+              onChange={(e) => setUser("user2", e.target.value)}
+              value={user2}
+            />
+          </div>
+          <div className="game-user">
+            <Select
+              className="mui-select"
+              value={row}
+              label="Board size"
+              onChange={(e) => {
+                setBoard(e.target.value);
+              }}
+            >
+              {options}
+            </Select>
+          </div>
+          <div className="game-info">
+            <div>{status}</div>
+            <ol className="step">{moves}</ol>
+          </div>
         </div>
-        <div className="game-user">
-          <span>User 2</span>
-          <input
-            className="user2"
-            ref={refUser2}
-            type="text"
-            onChange={(e) => setUser("user2", e.target.value)}
-            value={user2}
-          />
-        </div>
-        <div className="game-user">
-          <span>Board size</span>
 
-          <select
-            onChange={(e) => {
-              setBoard(e.target.value);
-            }}
-          >
-            {options}
-          </select>
-        </div>
         <div className="game-board">
           <Board
             squares={current.squares}
@@ -123,10 +137,6 @@ function Game() {
             onClick={handleClick}
           />
         </div>
-      </div>
-      <div className="game-info">
-        <div>{status}</div>
-        <ol>{moves}</ol>
       </div>
     </div>
   );
