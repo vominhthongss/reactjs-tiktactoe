@@ -3,15 +3,23 @@ import Board from "./Board";
 import "./Game.css";
 import calculateWinner from "../help/calculateWinner";
 import { Button, MenuItem, Select, TextField } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { setRow } from "../store/actions/row";
+import { setColumn } from "../store/actions/column";
+import { setHistory } from "../store/actions/history";
+import { setStepNumber } from "../store/actions/stepNumber";
+import { setXIsNext } from "../store/actions/xIsNext";
+import NestedModal from "./NestedModal";
+import { showNestedModal } from "../store/actions/displayNestedModal";
 
 function Game() {
-  const [row, setRow] = useState(3);
-  const [column, setColumn] = useState(3);
-  const [history, setHistory] = useState([
-    { squares: Array(10 * 10).fill(null) },
-  ]);
-  const [stepNumber, setStepNumber] = useState(0);
-  const [xIsNext, setXIsNext] = useState(true);
+  const row = useSelector((state) => state.row);
+  const column = useSelector((state) => state.column);
+  const history = useSelector((state) => state.history);
+  const stepNumber = useSelector((state) => state.stepNumber);
+  const xIsNext = useSelector((state) => state.xIsNext);
+  const dispatch = useDispatch();
+
   const [user1, setUser1] = useState("X");
   const [user2, setUser2] = useState("O");
   const refUser1 = useRef(null);
@@ -43,12 +51,12 @@ function Game() {
     const current = historyTemp[historyTemp.length - 1];
     const squares = current.squares.slice();
     if (user1 === "") {
-      alert("Nhập tên User 1");
+      dispatch(showNestedModal());
       refUser1.current.focus();
       return;
     }
     if (user2 === "") {
-      alert("Nhập tên User 2");
+      dispatch(showNestedModal());
       refUser2.current.focus();
       return;
     }
@@ -57,14 +65,14 @@ function Game() {
     }
     squares[i] = xIsNext ? "X" : "O";
 
-    setHistory(history.concat([{ squares: squares }]));
-    setXIsNext(!xIsNext);
-    setStepNumber(history.length);
+    dispatch(setHistory({ squares: squares }));
+    dispatch(setXIsNext());
+    dispatch(setStepNumber(history.length));
   };
 
   const jumpTo = (step) => {
     setXIsNext(step % 2 === 0);
-    setStepNumber(step);
+    dispatch(setStepNumber(step));
   };
 
   const setUser = (name, value) => {
@@ -76,8 +84,8 @@ function Game() {
   };
 
   const setBoard = (value) => {
-    setRow(value);
-    setColumn(value);
+    dispatch(setRow(value));
+    dispatch(setColumn(value));
   };
 
   let status;
@@ -89,6 +97,11 @@ function Game() {
   return (
     <div>
       <div className="game-title">TIC TAC TOE</div>
+      <div>
+        <NestedModal
+          user={user1 === "" ? "User 1" : user2 === "" ? "User 2" : ""}
+        />
+      </div>
       <div className="game">
         <div className="game-content">
           <div className="game-user">
@@ -130,12 +143,7 @@ function Game() {
         </div>
 
         <div className="game-board">
-          <Board
-            squares={current.squares}
-            row={row}
-            column={column}
-            onClick={handleClick}
-          />
+          <Board squares={current.squares} onClick={handleClick} />
         </div>
       </div>
     </div>

@@ -1,0 +1,12 @@
+const displayNestedModalReducer = (state = false, action) => {
+  switch (action.type) {
+    case "SHOWNESTEDMODAL":
+      return true;
+    case "HIDENESTEDMODAL":
+      return false;
+
+    default:
+      return state;
+  }
+};
+export default displayNestedModalReducer;

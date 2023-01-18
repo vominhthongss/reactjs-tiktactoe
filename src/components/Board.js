@@ -1,7 +1,10 @@
 import React from "react";
 import Square from "./Square";
 import "./Board.css";
+import { useSelector } from "react-redux";
 function Board(props) {
+  const row = useSelector((state) => state.row);
+  const column = useSelector((state) => state.column);
   let count = 0;
   const renderSquare = (i) => {
     return (
@@ -14,15 +17,15 @@ function Board(props) {
   };
 
   const boardRow = [];
-  for (var i = 0; i < props.column; i++) {
-    const row = [];
-    for (var j = 0; j < props.row; j++) {
-      row.push(renderSquare(count));
+  for (var i = 0; i < column; i++) {
+    const _row = [];
+    for (var j = 0; j < row; j++) {
+      _row.push(renderSquare(count));
       count++;
     }
     boardRow.push(
       <div className="board-row" key={i}>
-        {row}
+        {_row}
       </div>
     );
   }
