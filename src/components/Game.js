@@ -3,6 +3,8 @@ import Board from "./Board";
 import "./Game.css";
 import calculateWinner from "../help/calculateWinner";
 import { Button, MenuItem, Select, TextField } from "@mui/material";
+import { makeStyles } from "@mui/styles";
+import { styled } from "@mui/material/styles";
 import { useDispatch, useSelector } from "react-redux";
 import { setRow } from "../store/actions/row";
 import { setColumn } from "../store/actions/column";
@@ -11,6 +13,49 @@ import { setStepNumber } from "../store/actions/stepNumber";
 import { setXIsNext } from "../store/actions/xIsNext";
 import NestedModal from "./NestedModal";
 import { showNestedModal } from "../store/actions/displayNestedModal";
+const useStylesTextField1 = makeStyles(() => ({
+  root: {
+    "& label": {
+      color: "green",
+    },
+    "& label.Mui-focused": {
+      color: "green",
+    },
+    "& input": {
+      color: "red",
+      fontSize: 14,
+      fontWeight: 600,
+    },
+    "& .Mui-focused input": {},
+    "& .MuiOutlinedInput-root": {
+      "&.Mui-focused fieldset": {
+        borderColor: "green",
+      },
+    },
+  },
+}));
+const useStylesTextField2 = makeStyles(() => ({
+  root: {
+    color: "blue",
+    "& label": {
+      color: "green",
+    },
+    "& label.Mui-focused": {
+      color: "green",
+    },
+    "& input": {
+      color: "blue",
+      fontSize: 14,
+      fontWeight: 600,
+    },
+    "& .Mui-focused input": {},
+    "& .MuiOutlinedInput-root": {
+      "&.Mui-focused fieldset": {
+        borderColor: "green",
+      },
+    },
+  },
+}));
 
 function Game() {
   const row = useSelector((state) => state.row);
@@ -27,9 +72,11 @@ function Game() {
   const current = history[stepNumber];
   const winner = calculateWinner(current.squares, row, column);
   const moves = history.map((step, move) => {
+    console.log("move :", move);
     const desc = move ? "Go to move #" + move : "Go to game start";
+
     return (
-      <li key={move} className="game-btn">
+      <li key={move} className="game-btn" id={move}>
         <Button
           onClick={() => jumpTo(move)}
           variant="contained"
@@ -50,6 +97,8 @@ function Game() {
     const historyTemp = history.slice(0, stepNumber + 1);
     const current = historyTemp[historyTemp.length - 1];
     const squares = current.squares.slice();
+    const element = document.getElementById(stepNumber);
+    element.scrollIntoView({ behavior: "smooth" });
     if (user1 === "") {
       dispatch(showNestedModal());
       refUser1.current.focus();
@@ -91,9 +140,32 @@ function Game() {
   let status;
   if (winner) {
     status = "Winner: " + (winner === "X" ? user1 : user2) + "🥳🥳🥳🥳";
+    dispatch(showNestedModal());
   } else {
     status = "Next player: " + (xIsNext ? user1 : user2);
   }
+
+  const classes1 = useStylesTextField1();
+  const classes2 = useStylesTextField2();
+
+  const CustomSelect = styled(Select)(() => ({
+    color: "black",
+    fontSize: 14,
+    fontWeight: 600,
+    "& label": {
+      color: "green",
+    },
+    "& label.Mui-focused": {
+      color: "green",
+    },
+    "&.MuiOutlinedInput-root": {
+      "& fieldset": {},
+      "&:hover fieldset": {},
+      "&.Mui-focused fieldset": {
+        borderColor: "green",
+      },
+    },
+  }));
   return (
     <div>
       <div className="game-title">TIC TAC TOE</div>
@@ -106,6 +178,7 @@ function Game() {
         <div className="game-content">
           <div className="game-user">
             <TextField
+              classes={classes1}
               className="mui-textfield"
               inputRef={refUser1}
               label="User 1"
@@ -116,6 +189,7 @@ function Game() {
           </div>
           <div className="game-user">
             <TextField
+              classes={classes2}
               className="mui-textfield"
               inputRef={refUser2}
               label="User 2"
@@ -125,7 +199,7 @@ function Game() {
             />
           </div>
           <div className="game-user">
-            <Select
+            <CustomSelect
               className="mui-select"
               value={row}
               label="Board size"
@@ -134,7 +208,7 @@ function Game() {
               }}
             >
               {options}
-            </Select>
+            </CustomSelect>
           </div>
           <div className="game-info">
             <div>{status}</div>
