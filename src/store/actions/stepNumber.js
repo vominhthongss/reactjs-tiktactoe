@@ -1,6 +1,8 @@
+import { SETSTEPNUMBER } from "../constants/action";
+
 export const setStepNumber = (number) => {
   return {
-    type: "SETSTEPNUMBER",
+    type: SETSTEPNUMBER,
     payload: number,
   };
 };

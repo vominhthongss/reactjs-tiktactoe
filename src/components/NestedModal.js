@@ -38,9 +38,12 @@ const NestedModal = (props) => {
           <h2 id="parent-modal-title">THÔNG BÁO</h2>
 
           <p id="parent-modal-description">
-            {props.user
-              ? "Vui lòng nhập tên người chơi " + props.user + " nha bạn !"
-              : "Kết thúc !!!!"}
+            {props.user && props.winner === null
+              ? "Vui lòng nhập tên người chơi " +
+                props.user +
+                " nha bạn !" +
+                props.winner
+              : "Winner: " + props.user + "🥳🥳🥳🥳 "}
           </p>
           <Button
             onClick={() => handleClose()}

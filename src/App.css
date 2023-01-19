@@ -4,6 +4,7 @@ body {
   padding: 40px;
 }
 
-ol, ul {
+ol,
+ul {
   padding-left: 30px;
 }

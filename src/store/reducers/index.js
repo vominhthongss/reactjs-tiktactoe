@@ -1,13 +1,13 @@
 import { combineReducers } from "redux";
-import columnReducer from "./column";
 import historyReducer from "./history";
-import rowReducer from "./row";
 import stepNumberReducer from "./stepNumber";
 import displayNestedModalReducer from "./displayNestedModal";
 import xIsNextReducer from "./xIsNext";
+import boardReducer from "./board";
+import userReducer from "./user";
 const allReducers = combineReducers({
-  row: rowReducer,
-  column: columnReducer,
+  board: boardReducer,
+  user: userReducer,
   history: historyReducer,
   stepNumber: stepNumberReducer,
   xIsNext: xIsNextReducer,

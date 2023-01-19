@@ -1,6 +1,9 @@
-const xIsNextReducer = (state = true, action) => {
+import { SETXISNEXT } from "../constants/action";
+
+const initialState = true;
+const xIsNextReducer = (state = initialState, action) => {
   switch (action.type) {
-    case "SETXISNEXT":
+    case SETXISNEXT:
       return !state;
 
     default:

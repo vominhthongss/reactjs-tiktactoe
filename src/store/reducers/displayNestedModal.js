@@ -1,10 +1,12 @@
-const displayNestedModalReducer = (state = false, action) => {
-  switch (action.type) {
-    case "SHOWNESTEDMODAL":
-      return true;
-    case "HIDENESTEDMODAL":
-      return false;
+import { HIDENESTEDMODAL, SHOWNESTEDMODAL } from "../constants/action";
 
+const initialState = false;
+const displayNestedModalReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case SHOWNESTEDMODAL:
+      return true;
+    case HIDENESTEDMODAL:
+      return false;
     default:
       return state;
   }

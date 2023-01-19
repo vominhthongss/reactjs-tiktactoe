@@ -9,6 +9,7 @@
   font-size: larger;
   padding: 10px;
   font-weight: bold;
+  color: white;
 }
 
 .game-user {
@@ -53,11 +54,11 @@
 }
 
 .mui-textfield {
-  width: 230px;
+  width: 300px;
 }
 
 .mui-select {
-  width: 230px;
+  width: 300px;
 }
 
 .step {

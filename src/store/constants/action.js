@@ -1,0 +1,9 @@
+export const SETCOLUMN = "SETCOLUMN";
+export const SETROW = "SETROW";
+export const SHOWNESTEDMODAL = "SHOWNESTEDMODAL";
+export const HIDENESTEDMODAL = "HIDENESTEDMODAL";
+export const SETHISTORY = "SETHISTORY";
+export const SETSTEPNUMBER = "SETSTEPNUMBER";
+export const SETUSER1 = "SETUSER1";
+export const SETUSER2 = "SETUSER2";
+export const SETXISNEXT = "SETXISNEXT";

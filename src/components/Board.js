@@ -3,8 +3,10 @@ import Square from "./Square";
 import "./Board.css";
 import { useSelector } from "react-redux";
 function Board(props) {
-  const row = useSelector((state) => state.row);
-  const column = useSelector((state) => state.column);
+  // const row = useSelector((state) => state.row);
+  // const column = useSelector((state) => state.column);
+  const row = useSelector((state) => state.board.row);
+  const column = useSelector((state) => state.board.column);
   let count = 0;
   const renderSquare = (i) => {
     return (
@@ -30,7 +32,7 @@ function Board(props) {
     );
   }
 
-  return <div className="board-main">{boardRow}</div>;
+  return <div className="board-main">{boardRow} </div>;
 }
 
 export default Board;

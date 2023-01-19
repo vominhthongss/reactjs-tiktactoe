@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import Board from "./Board";
 import "./Game.css";
 import calculateWinner from "../help/calculateWinner";
@@ -6,13 +6,15 @@ import { Button, MenuItem, Select, TextField } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { styled } from "@mui/material/styles";
 import { useDispatch, useSelector } from "react-redux";
-import { setRow } from "../store/actions/row";
-import { setColumn } from "../store/actions/column";
+import { setRow } from "../store/actions/board";
+import { setColumn } from "../store/actions/board";
 import { setHistory } from "../store/actions/history";
 import { setStepNumber } from "../store/actions/stepNumber";
 import { setXIsNext } from "../store/actions/xIsNext";
 import NestedModal from "./NestedModal";
 import { showNestedModal } from "../store/actions/displayNestedModal";
+import { setUser1, setUser2 } from "../store/actions/user";
+
 const useStylesTextField1 = makeStyles(() => ({
   root: {
     "& label": {
@@ -58,15 +60,19 @@ const useStylesTextField2 = makeStyles(() => ({
 }));
 
 function Game() {
-  const row = useSelector((state) => state.row);
-  const column = useSelector((state) => state.column);
+  // const row = useSelector((state) => state.row);
+  const row = useSelector((state) => state.board.row);
+  //const column = useSelector((state) => state.column);
+  const column = useSelector((state) => state.board.column);
   const history = useSelector((state) => state.history);
   const stepNumber = useSelector((state) => state.stepNumber);
   const xIsNext = useSelector((state) => state.xIsNext);
   const dispatch = useDispatch();
 
-  const [user1, setUser1] = useState("X");
-  const [user2, setUser2] = useState("O");
+  // const [user1, setUser1] = useState("X");
+  // const [user2, setUser2] = useState("O");
+  const user1 = useSelector((state) => state.user.user1);
+  const user2 = useSelector((state) => state.user.user2);
   const refUser1 = useRef(null);
   const refUser2 = useRef(null);
   const current = history[stepNumber];
@@ -126,15 +132,15 @@ function Game() {
 
   const setUser = (name, value) => {
     if (name === "user1") {
-      setUser1(value);
+      dispatch(setUser1({ user1: value }));
     } else {
-      setUser2(value);
+      dispatch(setUser2({ user2: value }));
     }
   };
 
   const setBoard = (value) => {
-    dispatch(setRow(value));
-    dispatch(setColumn(value));
+    dispatch(setRow({ row: value }));
+    dispatch(setColumn({ column: value }));
   };
 
   let status;
@@ -152,12 +158,6 @@ function Game() {
     color: "black",
     fontSize: 14,
     fontWeight: 600,
-    "& label": {
-      color: "green",
-    },
-    "& label.Mui-focused": {
-      color: "green",
-    },
     "&.MuiOutlinedInput-root": {
       "& fieldset": {},
       "&:hover fieldset": {},
@@ -171,7 +171,16 @@ function Game() {
       <div className="game-title">TIC TAC TOE</div>
       <div>
         <NestedModal
-          user={user1 === "" ? "User 1" : user2 === "" ? "User 2" : ""}
+          user={
+            user1 === ""
+              ? "User 1"
+              : user2 === ""
+              ? "User 2"
+              : !xIsNext
+              ? user1
+              : user2
+          }
+          winner={winner}
         />
       </div>
       <div className="game">
@@ -200,9 +209,10 @@ function Game() {
           </div>
           <div className="game-user">
             <CustomSelect
+              placeholder="Board size"
               className="mui-select"
               value={row}
-              label="Board size"
+              label="Label"
               onChange={(e) => {
                 setBoard(e.target.value);
               }}

@@ -1,9 +1,9 @@
-const historyReducer = (
-  state = [{ squares: Array(10 * 10).fill(null) }],
-  action
-) => {
+import { SETHISTORY } from "../constants/action";
+
+const initialState = [{ squares: Array(10 * 10).fill(null) }];
+const historyReducer = (state = initialState, action) => {
   switch (action.type) {
-    case "SETHISTORY":
+    case SETHISTORY:
       return [...state, action.payload];
 
     default:
