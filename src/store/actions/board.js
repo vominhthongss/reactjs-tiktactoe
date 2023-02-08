@@ -6,6 +6,7 @@ export const setColumn = (column) => {
     payload: column,
   };
 };
+
 export const setRow = (row) => {
   return {
     type: SETROW,

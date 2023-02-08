@@ -1,10 +1,8 @@
 import React from "react";
-import Square from "./Square";
-import "./Board.css";
+import Square from "../Square";
+import "./style.css";
 import { useSelector } from "react-redux";
 function Board(props) {
-  // const row = useSelector((state) => state.row);
-  // const column = useSelector((state) => state.column);
   const row = useSelector((state) => state.board.row);
   const column = useSelector((state) => state.board.column);
   let count = 0;

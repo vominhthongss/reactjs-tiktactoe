@@ -1,19 +1,22 @@
 import React, { useRef } from "react";
-import Board from "./Board";
-import "./Game.css";
-import calculateWinner from "../help/calculateWinner";
+import Board from "../Board";
+import "./style.css";
+import calculateWinner from "../../help/calculateWinner";
 import { Button, MenuItem, Select, TextField } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { styled } from "@mui/material/styles";
 import { useDispatch, useSelector } from "react-redux";
-import { setRow } from "../store/actions/board";
-import { setColumn } from "../store/actions/board";
-import { setHistory } from "../store/actions/history";
-import { setStepNumber } from "../store/actions/stepNumber";
-import { setXIsNext } from "../store/actions/xIsNext";
-import NestedModal from "./NestedModal";
-import { showNestedModal } from "../store/actions/displayNestedModal";
-import { setUser1, setUser2 } from "../store/actions/user";
+import { setRow } from "../../store/actions/board";
+import { setColumn } from "../../store/actions/board";
+import {
+  handleClick,
+  handleRestart,
+  jumpTo,
+  setUser1,
+  setUser2,
+} from "../../store/actions/game";
+import NestedModal from "../NestedModal";
+import { showNestedModal } from "../../store/actions/displayNestedModal";
 
 const useStylesTextField1 = makeStyles(() => ({
   root: {
@@ -60,31 +63,26 @@ const useStylesTextField2 = makeStyles(() => ({
 }));
 
 function Game() {
-  // const row = useSelector((state) => state.row);
   const row = useSelector((state) => state.board.row);
-  //const column = useSelector((state) => state.column);
   const column = useSelector((state) => state.board.column);
-  const history = useSelector((state) => state.history);
-  const stepNumber = useSelector((state) => state.stepNumber);
-  const xIsNext = useSelector((state) => state.xIsNext);
+
+  const history = useSelector((state) => state.game.history);
+  const stepNumber = useSelector((state) => state.game.stepNumber);
+  const xIsNext = useSelector((state) => state.game.xIsNext);
+  const user1 = useSelector((state) => state.game.user.user1);
+  const user2 = useSelector((state) => state.game.user.user2);
   const dispatch = useDispatch();
 
-  // const [user1, setUser1] = useState("X");
-  // const [user2, setUser2] = useState("O");
-  const user1 = useSelector((state) => state.user.user1);
-  const user2 = useSelector((state) => state.user.user2);
   const refUser1 = useRef(null);
   const refUser2 = useRef(null);
   const current = history[stepNumber];
   const winner = calculateWinner(current.squares, row, column);
   const moves = history.map((step, move) => {
-    console.log("move :", move);
     const desc = move ? "Go to move #" + move : "Go to game start";
-
     return (
       <li key={move} className="game-btn" id={move}>
         <Button
-          onClick={() => jumpTo(move)}
+          onClick={() => dispatch(jumpTo(move))}
           variant="contained"
           color="success"
         >
@@ -99,50 +97,6 @@ function Game() {
     </MenuItem>
   ));
 
-  const handleClick = (i) => {
-    const historyTemp = history.slice(0, stepNumber + 1);
-    const current = historyTemp[historyTemp.length - 1];
-    const squares = current.squares.slice();
-    const element = document.getElementById(stepNumber);
-    element.scrollIntoView({ behavior: "smooth" });
-    if (user1 === "") {
-      dispatch(showNestedModal());
-      refUser1.current.focus();
-      return;
-    }
-    if (user2 === "") {
-      dispatch(showNestedModal());
-      refUser2.current.focus();
-      return;
-    }
-    if (calculateWinner(squares, row, column) || squares[i]) {
-      return;
-    }
-    squares[i] = xIsNext ? "X" : "O";
-
-    dispatch(setHistory({ squares: squares }));
-    dispatch(setXIsNext());
-    dispatch(setStepNumber(history.length));
-  };
-
-  const jumpTo = (step) => {
-    setXIsNext(step % 2 === 0);
-    dispatch(setStepNumber(step));
-  };
-
-  const setUser = (name, value) => {
-    if (name === "user1") {
-      dispatch(setUser1({ user1: value }));
-    } else {
-      dispatch(setUser2({ user2: value }));
-    }
-  };
-
-  const setBoard = (value) => {
-    dispatch(setRow({ row: value }));
-    dispatch(setColumn({ column: value }));
-  };
-
   let status;
   if (winner) {
     status = "Winner: " + (winner === "X" ? user1 : user2) + "🥳🥳🥳🥳";
@@ -153,7 +107,6 @@ function Game() {
 
   const classes1 = useStylesTextField1();
   const classes2 = useStylesTextField2();
-
   const CustomSelect = styled(Select)(() => ({
     color: "black",
     fontSize: 14,
@@ -166,6 +119,7 @@ function Game() {
       },
     },
   }));
+
   return (
     <div>
       <div className="game-title">TIC TAC TOE</div>
@@ -192,7 +146,7 @@ function Game() {
               inputRef={refUser1}
               label="User 1"
               variant="outlined"
-              onChange={(e) => setUser("user1", e.target.value)}
+              onChange={(e) => dispatch(setUser1({ user1: e.target.value }))}
               value={user1}
             />
           </div>
@@ -203,7 +157,7 @@ function Game() {
               inputRef={refUser2}
               label="User 2"
               variant="outlined"
-              onChange={(e) => setUser("user2", e.target.value)}
+              onChange={(e) => dispatch(setUser2({ user2: e.target.value }))}
               value={user2}
             />
           </div>
@@ -214,7 +168,8 @@ function Game() {
               value={row}
               label="Label"
               onChange={(e) => {
-                setBoard(e.target.value);
+                dispatch(setRow({ row: e.target.value }));
+                dispatch(setColumn({ column: e.target.value }));
               }}
             >
               {options}
@@ -227,7 +182,39 @@ function Game() {
         </div>
 
         <div className="game-board">
-          <Board squares={current.squares} onClick={handleClick} />
+          <Board
+            squares={current.squares}
+            onClick={(i) => {
+              const element = document.getElementById(stepNumber);
+              element.scrollIntoView({ behavior: "smooth" });
+              if (user1 === "") {
+                dispatch(showNestedModal());
+                refUser1.current.focus();
+                return;
+              }
+              if (user2 === "") {
+                dispatch(showNestedModal());
+                refUser2.current.focus();
+                return;
+              }
+              const historyTemp = history.slice(0, stepNumber + 1);
+              const current = historyTemp[historyTemp.length - 1];
+              const squares = current.squares.slice();
+              if (calculateWinner(squares, row, column) || squares[i]) {
+                return;
+              }
+              dispatch(handleClick(i));
+            }}
+          />
+        </div>
+        <div className="game-info">
+          <Button
+            variant="contained"
+            color="success"
+            onClick={() => dispatch(handleRestart())}
+          >
+            Restart
+          </Button>
         </div>
       </div>
     </div>

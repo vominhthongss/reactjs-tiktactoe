@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import { useDispatch, useSelector } from "react-redux";
-import { hideNestedModal } from "../store/actions/displayNestedModal";
+import { hideNestedModal } from "../../store/actions/displayNestedModal";
 import { Button } from "@mui/material";
 import React from "react";
 

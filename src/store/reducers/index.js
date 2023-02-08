@@ -1,16 +1,10 @@
 import { combineReducers } from "redux";
-import historyReducer from "./history";
-import stepNumberReducer from "./stepNumber";
 import displayNestedModalReducer from "./displayNestedModal";
-import xIsNextReducer from "./xIsNext";
 import boardReducer from "./board";
-import userReducer from "./user";
+import gameReducer from "./game";
 const allReducers = combineReducers({
   board: boardReducer,
-  user: userReducer,
-  history: historyReducer,
-  stepNumber: stepNumberReducer,
-  xIsNext: xIsNextReducer,
   displayNestedModal: displayNestedModalReducer,
+  game: gameReducer,
 });
 export default allReducers;
